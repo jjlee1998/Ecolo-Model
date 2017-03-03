@@ -8,13 +8,22 @@
 
 import Foundation
 
-class Ecosystem: CustomStringConvertible {
+protocol FactorDelegate {
+    func getSeasonNumber() -> Int
+}
+
+class Ecosystem: CustomStringConvertible, FactorDelegate {
     
+    var season = 10
     var factors = [String: Factor]()
     var description: String
     
     init(name: String) {
         description = name
+    }
+    
+    func getSeasonNumber() -> Int {
+        return season
     }
     
     func add(_ factor: Factor) {
@@ -38,12 +47,20 @@ class Ecosystem: CustomStringConvertible {
     }
     
     func nextCycle() {
-        print("Next Cycle")
+        season += 1
+        if season > 10 {
+            season = 1
+        }
+        print("Season \(getSeasonNumber())")
     }
     
-    func printFactors() {
-        for f in factors {
-            print(f.0)
+    func printFactors(withTargets: Bool = false) {
+        for factor in factors.values {
+            print(factor)
+            if withTargets {
+                factor.printTargets()
+            }
+            
         }
     }
 }
