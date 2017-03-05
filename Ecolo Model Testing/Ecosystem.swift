@@ -51,7 +51,10 @@ class Ecosystem: CustomStringConvertible, FactorDelegate {
         if season > 10 {
             season = 1
         }
-        print("Season \(getSeasonNumber())")
+        for factor in factors.values {
+            factor.executeRules()
+            factor.update()
+        }
     }
     
     func printFactors(withTargets: Bool = false) {
