@@ -8,14 +8,15 @@
 
 import Foundation
 
-var savanna = Ecosystem(name: "Savanna Ecosystem")
+var sun = Factor(factorName: "Sun", initialLevel: 5000)
+
+var savanna = Ecosystem(name: "Savanna Ecosystem", sun: sun)
 print(savanna, terminator: "\n\n")
 
-var sun = Factor(factorName: "Sun", initialLevel: 500, initialHealth: 1000, delegate: savanna, canReproduce: false)
-var rain = Factor(factorName: "Rain", initialLevel: 500, initialHealth: 1000, delegate: savanna, canReproduce: false)
-var grass = Factor(factorName: "Grass", initialLevel: 1000, initialHealth: 1000, delegate: savanna, canReproduce: true)
-var hare = Factor(factorName: "Hare", initialLevel: 100, initialHealth: 1000, delegate: savanna, canReproduce: true)
-var eagle = Factor(factorName: "Eagle", initialLevel: 10, initialHealth: 1000, delegate: savanna, canReproduce: true)
+var rain = Factor(factorName: "Rain", initialLevel: 4000)
+var grass = Factor(factorName: "Grass", initialLevel: 1000)
+var hare = Factor(factorName: "Hare", initialLevel: 100)
+var eagle = Factor(factorName: "Eagle", initialLevel: 10)
 
 savanna.add(sun)
 savanna.add(rain)
@@ -23,36 +24,15 @@ savanna.add(grass)
 savanna.add(hare)
 savanna.add(eagle)
 
-func rainSunBinding(rain: Factor, sun: Factor) {
-    rain.requestNextLevel(1000 - sun.level)
-    //print("Rain - Sun Binding Called")
-}
-savanna.addFactorTargetBinding(consumingFactor: rain, consumedFactor: sun, relationship: rainSunBinding)
+savanna.addPredatorDieoff(predator: hare, mortalityRate: 0.05)
+savanna.addPredatorDieoff(predator: eagle, mortalityRate: 0.01)
+savanna.addResourceResourceBinding(dependentResource: rain, independentResource: sun)
+savanna.addPreyResourceBinding(prey: grass, resource: rain, intrisicGrowthRate: 1.1)
+savanna.addPreyResourceBinding(prey: grass, resource: sun, intrisicGrowthRate: 1.1)
+savanna.addPredatorPreyBinding(predator: hare, prey: grass, attackRate: 0.01, conversionEfficiency: 0.0001)
+savanna.addPredatorPreyBinding(predator: eagle, prey: hare, attackRate: 0.01, conversionEfficiency: 0.0001)
 
-func organismResourceBinding(organism: Factor, resource: Factor) {
-    organism.requestNextHealth((-0.004 * pow(resource.level, 2.0)) + (4 * resource.level))
-    //print("\(organism.name) - \(resource.name) Binding Called")
-}
-savanna.addFactorTargetBinding(consumingFactor: grass, consumedFactor: sun, relationship: organismResourceBinding)
-savanna.addFactorTargetBinding(consumingFactor: grass, consumedFactor: rain, relationship: organismResourceBinding)
-
-func predatorPreyBinding(predator: Factor, prey: Factor) {
-    var targetPredatorHealth = predator.health
-    let targetPreyLevel = (prey.level - predator.level)
-    if prey.level >= predator.level {
-        targetPredatorHealth += (prey.level / 1000) * (1000 - predator.health)
-        predator.requestNextHealth(targetPredatorHealth)
-        prey.requestNextLevel(targetPreyLevel)
-    } else {
-        predator.requestNextHealth(predator.health * (prey.level / predator.level))
-        prey.requestNextLevel(targetPreyLevel)
-    }
-    //print("\(predator.name) - \(prey.name) Binding Called")
-}
-savanna.addFactorTargetBinding(consumingFactor: hare, consumedFactor: grass, relationship: predatorPreyBinding)
-savanna.addFactorTargetBinding(consumingFactor: eagle, consumedFactor: hare, relationship: predatorPreyBinding)
-
-for _ in 1...100 {
+for i in 1...500 {
     savanna.nextCycle()
-    print("Sun l: \((sun.level)) | Rain l: \((rain.level)) | Grass l: \((grass.level)) h: \((grass.health)) | Hare l: \((hare.level)) h: \((hare.health)) | Eagle l: \((eagle.level)) h: \((eagle.health))")
+    print("\(i) – Sun: \(sun.level), Rain: \(rain.level), Grass: \((grass.level)), Hare: \(hare.level), Eagle: \(eagle.level)")
 }
