@@ -9,81 +9,73 @@
 import Foundation
 
 protocol EcosystemProtocol {
-    func getSun() -> Factor
 }
 
-class Ecosystem: CustomStringConvertible, EcosystemProtocol {
+protocol FactorDelegate {
+    func getCycle() -> Int
+}
+
+class Ecosystem: CustomStringConvertible, EcosystemProtocol, FactorDelegate {
     
-    var sun: Factor
     var cycle = 0
     var factors = [String: Factor]()
     var description: String
     
-    init(name: String, sun: Factor) {
+    init(name: String) {
         description = name
-        self.sun = sun
     }
     
     func add(_ factor: Factor) {
         factors[factor.description] = factor
     }
     
-    func getSun() -> Factor {
-        return sun
+    func getCycle() -> Int {
+        return cycle
     }
     
-    @discardableResult func addPredatorDieoff(predator: Factor, mortalityRate: Double) -> Bool {
-        guard factors.values.contains(predator) else {
-            print("Could not add binding; could not find predator \(predator)")
-            return false
+    @discardableResult func addResourceTimeBinding(resource: Factor, amplitude: Double, offset: Int) -> Bool {
+        if factors.values.contains(resource) {
+            let startLevel = resource.level
+            sun.add(equation: {resource.setLevel(to: startLevel + amplitude * sin(Double(resource.delegate.getCycle() - offset) * M_PI / 180)); return 0.0}, frequency: 1)
+            return true
         }
-        predator.add(equation: {-(mortalityRate * predator.level)})
-        return true
+        return false
     }
     
-    @discardableResult func addResourceResourceBinding(dependentResource: Factor, independentResource: Factor) -> Bool {
-        guard factors.values.contains(dependentResource) else {
-            print("Could not add binding; could not find predator \(dependentResource)")
-            return false
+    @discardableResult func addOrganismDieoff(organism: BioFactor, mortalityRate: Double) -> Bool {
+        if factors.values.contains(organism) {
+            organism.add(equation: {-(mortalityRate * organism.level)}, frequency: 1)
+            return true
         }
-        guard factors.values.contains(independentResource) else {
-            print("Could not add binding; could not find prey \(independentResource)")
-            return false
-        }
-        dependentResource.add(equation: {dependentResource.level * (1 - (dependentResource.level / (10000 - independentResource.level)))})
-        return true
+        return false
     }
     
-    @discardableResult func addPreyResourceBinding(prey: Factor, resource: Factor, intrisicGrowthRate: Double) -> Bool {
-        guard factors.values.contains(resource) else {
-            print("Could not add binding; could not find predator \(resource)")
-            return false
+    /*@discardableResult func addResourceResourceBinding(dependentResource: Factor, independentResource: Factor) -> Bool {
+        if factors.values.contains(dependentResource) && factors.values.contains(independentResource) {
+            dependentResource.add(equation: {-0.0008 * independentResource.level + 4.0}, frequency: 1)
+            return true
         }
-        guard factors.values.contains(prey) else {
-            print("Could not add binding; could not find prey \(prey)")
-            return false
+        return false
+    }*/
+    
+    @discardableResult func addPreyResourceBinding(prey: BioFactor, resource: Factor, intrisicGrowthRate: Double) -> Bool {
+        if factors.values.contains(resource) && factors.values.contains(prey) {
+            prey.add(equation: {intrisicGrowthRate * prey.level * (1 - (prey.level / resource.level))}, frequency: prey.reproductionFrequency)
+            return true
         }
-        prey.add(equation: {intrisicGrowthRate * prey.level * (1 - (prey.level / resource.level))})
-        return true
+        return false
     }
     
-    @discardableResult func addPredatorPreyBinding(predator: Factor, prey: Factor, attackRate: Double, conversionEfficiency: Double) -> Bool {
-        guard factors.values.contains(predator) else {
-            print("Could not add binding; could not find predator \(predator)")
-            return false
+    @discardableResult func addPredatorPreyBinding(predator: BioFactor, prey: BioFactor, attackRate: Double, conversionEfficiency: Double) -> Bool {
+        if factors.values.contains(predator) && factors.values.contains(prey) {
+            prey.add(equation: {-attackRate * prey.level * predator.level}, frequency: 1)
+            predator.add(equation: {conversionEfficiency * prey.level * predator.level}, frequency: predator.reproductionFrequency)
         }
-        guard factors.values.contains(prey) else {
-            print("Could not add binding; could not find prey \(prey)")
-            return false
-        }
-        prey.add(equation: {-attackRate * prey.level * predator.level})
-        predator.add(equation: {conversionEfficiency * prey.level * predator.level})
-        return true
+        return false
     }
     
     func nextCycle() {
         cycle += 1
-        getSun().level = 4000 + 1000 * cos(Double(cycle) * M_PI / 180 / 10)
         for factor in factors.values {
             factor.nextCycle()
             factor.update()

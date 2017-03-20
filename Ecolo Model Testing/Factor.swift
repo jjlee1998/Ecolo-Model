@@ -10,36 +10,46 @@ import Foundation
 
 class Factor: CustomStringConvertible, Hashable {
     
-    var name: String
     static var nextHashValue = 0
     var hashValue: Int
-    var populationEquations = [() -> Double]()
-    var level: Double
+    let name: String
+    var delegate: FactorDelegate
+    private(set) var level: Double
     var delta = 0.0
+    var equations = [(Int, () -> Double)]()
     var description: String {
         return "\(name) – lvl \(level)"
     }
     
-    init(factorName: String, initialLevel: Double) {
-        name = factorName
+    init(name: String, level: Double, delegate: FactorDelegate) {
+        self.name = name
         hashValue = Factor.nextHashValue
         Factor.nextHashValue += 1
-        level = initialLevel
+        self.level = level
+        self.delegate = delegate
     }
     
-    // Required by the Equitable Protocol, which is required by the Hashable Protocol:
     static func ==(f1: Factor, f2: Factor) -> Bool {
         return f1.hashValue == f2.hashValue
     }
     
-    // Called by the public to add new targets and new rules to this factor:
-    func add(equation: @escaping () -> Double) {
-        populationEquations.append(equation)
+    func setLevel(to newLevel: Double) {
+        level = newLevel
+    }
+    
+    func add(equation: @escaping () -> Double, frequency: Int) {
+        if frequency > 0 {
+            equations.append((frequency, equation))
+        }
     }
     
     func nextCycle() {
-        delta = populationEquations.reduce(0.0, {$0 + $1()})
-        //print("\(name) delta \(delta)")
+        delta = 0.0
+        for (frequency, equation) in equations {
+            if delegate.getCycle() % frequency == 0 {
+                delta += equation()
+            }
+        }
     }
     
     func update() {
