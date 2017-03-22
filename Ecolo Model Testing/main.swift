@@ -9,29 +9,36 @@
 import Foundation
 
 
-var savanna = Ecosystem(name: "Savanna Ecosystem")
-print(savanna, terminator: "\n\n")
+var antarctic = Ecosystem(name: "Antarctic Ecosystem")
+print(antarctic, terminator: "\n\n")
 
 
-/*var sun = Factor(name: "Sun", level: 5000, delegate: savanna)
-var rain = Factor(name: "Rain", level: 4000, delegate: savanna)*/
-var grass = BioFactor(name: "Grass", level: 1.25, delegate: savanna, reproductionFrequency: 1, memberWeight: 0.00001) //2, 1, 1
-var hare = BioFactor(name: "Hare", level: 0.5, delegate: savanna, reproductionFrequency: 1, memberWeight: 2.5)
-var eagle = BioFactor(name: "Eagle", level: 0.25, delegate: savanna, reproductionFrequency: 1, memberWeight: 2.0)
+/*var sun = Factor(name: "Sun", level: 5000, delegate: antarctic)
+var rain = Factor(name: "Rain", level: 4000, delegate: antarctic)*/
+var phytoplankton = BioFactor(name: "Phytoplankton", level: 1.125, delegate: antarctic, reproductionFrequency: 1)
+var krill = BioFactor(name: "Krill", level: 1.5, delegate: antarctic, reproductionFrequency: 1)
+var penguin = BioFactor(name: "Penguin", level: 0.125, delegate: antarctic, reproductionFrequency: 1)
+var orca = BioFactor(name: "Orca", level: 4, delegate: antarctic, reproductionFrequency: 1)
 
-/*savanna.add(sun)
-savanna.add(rain)*/
-savanna.add(grass)
-savanna.add(hare)
-savanna.add(eagle)
 
-savanna.addNaturalSpeciesGrowthRate(species: grass, naturalGrowthRate: 3)
-savanna.addPredatorPreyBinding(predator: hare, prey: grass, effectOnPrey: 6, predEfficiency: 1)
-savanna.addOrganismDieoff(organism: hare, mortalityRate: 1)
-savanna.addPredatorPreyBinding(predator: eagle, prey: hare, effectOnPrey: 1, predEfficiency: 4)
-savanna.addOrganismDieoff(organism: eagle, mortalityRate: 2)
+
+
+/*antarctic.add(sun)
+antarctic.add(rain)*/
+antarctic.add(phytoplankton)
+antarctic.add(krill)
+antarctic.add(penguin)
+antarctic.add(orca)
+
+antarctic.addNaturalSpeciesGrowthRate(species: phytoplankton, naturalGrowthRate: 3)
+antarctic.addOrganismDieoff(organism: krill, mortalityRate: 1)
+antarctic.addPredatorPreyBinding(predator: krill, prey: phytoplankton, effectOnPrey: 2, predEfficiency: 1)
+antarctic.addOrganismDieoff(organism: penguin, mortalityRate: 2)
+antarctic.addPredatorPreyBinding(predator: penguin, prey: krill, effectOnPrey: 1, predEfficiency: 4)
+antarctic.addOrganismDieoff(organism: orca, mortalityRate: 0.5)
+antarctic.addPredatorPreyBinding(predator: orca, prey: penguin, effectOnPrey: 1, predEfficiency: 4)
 
 for i in 1...100 {
-    savanna.nextCycle()
-    print("\(i) – Grass: \((grass.level)), Hare: \(hare.level), Eagle: \(eagle.level)")
+    antarctic.nextCycle()
+    print("\(i) – phytoplankton: \((phytoplankton.level)), krill: \(krill.level), penguin: \(penguin.level), orca: \(orca.level)")
 }

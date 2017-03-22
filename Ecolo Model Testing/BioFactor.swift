@@ -11,11 +11,9 @@ import Foundation
 class BioFactor: Factor {
     
     let reproductionFrequency: Int
-    let memberWeight: Double
     
-    init(name: String, level: Double, delegate: FactorDelegate, reproductionFrequency: Int, memberWeight: Double) {
+    init(name: String, level: Double, delegate: FactorDelegate, reproductionFrequency: Int) {
         self.reproductionFrequency = reproductionFrequency
-        self.memberWeight = memberWeight
         super.init(name: name, level: level, delegate: delegate)
     }
 }
