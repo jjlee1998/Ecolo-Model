@@ -37,6 +37,11 @@ class Factor: CustomStringConvertible, Hashable {
         level = newLevel
     }
     
+    func getLevel() -> Double {
+        //print("Level \(level) gotten for \(name)")
+        return level
+    }
+    
     func add(equation: @escaping () -> Double, frequency: Int) {
         if frequency > 0 {
             equations.append((frequency, equation))
@@ -53,6 +58,9 @@ class Factor: CustomStringConvertible, Hashable {
     }
     
     func update() {
-        level += delta
+        level += delta / Double(delegate.getEulerIntervals())
+        if level < 1e-6 {
+            level = 0
+        }
     }
 }

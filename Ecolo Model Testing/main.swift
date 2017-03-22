@@ -13,29 +13,25 @@ var savanna = Ecosystem(name: "Savanna Ecosystem")
 print(savanna, terminator: "\n\n")
 
 
-var sun = Factor(name: "Sun", level: 5000, delegate: savanna)
-var rain = Factor(name: "Rain", level: 4000, delegate: savanna)
-var grass = BioFactor(name: "Grass", level: 500, delegate: savanna, reproductionFrequency: 1, memberWeight: 0.00001)
-var hare = BioFactor(name: "Hare", level: 100, delegate: savanna, reproductionFrequency: 1, memberWeight: 2.5)
-var eagle = BioFactor(name: "Eagle", level: 10, delegate: savanna, reproductionFrequency: 12, memberWeight: 2.0)
+/*var sun = Factor(name: "Sun", level: 5000, delegate: savanna)
+var rain = Factor(name: "Rain", level: 4000, delegate: savanna)*/
+var grass = BioFactor(name: "Grass", level: 1.25, delegate: savanna, reproductionFrequency: 1, memberWeight: 0.00001) //2, 1, 1
+var hare = BioFactor(name: "Hare", level: 0.5, delegate: savanna, reproductionFrequency: 1, memberWeight: 2.5)
+var eagle = BioFactor(name: "Eagle", level: 0.25, delegate: savanna, reproductionFrequency: 1, memberWeight: 2.0)
 
-savanna.add(sun)
-savanna.add(rain)
+/*savanna.add(sun)
+savanna.add(rain)*/
 savanna.add(grass)
 savanna.add(hare)
 savanna.add(eagle)
 
-savanna.addResourceTimeBinding(resource: sun, amplitude: 1000, offset: 90)
-savanna.addResourceTimeBinding(resource: rain, amplitude: 2000, offset: 90)
-savanna.addOrganismDieoff(organism: grass, mortalityRate: 0.01)
-savanna.addOrganismDieoff(organism: hare, mortalityRate: 0.01)
-savanna.addOrganismDieoff(organism: eagle, mortalityRate: 0.01)
-savanna.addPreyResourceBinding(prey: grass, resource: rain, intrisicGrowthRate: 1.1)
-savanna.addPreyResourceBinding(prey: grass, resource: sun, intrisicGrowthRate: 1.1)
-savanna.addPredatorPreyBinding(predator: hare, prey: grass, attackRate: 0.01, conversionEfficiency: 0.01)
-savanna.addPredatorPreyBinding(predator: eagle, prey: hare, attackRate: 0.01, conversionEfficiency: 0.01)
+savanna.addNaturalSpeciesGrowthRate(species: grass, naturalGrowthRate: 3)
+savanna.addPredatorPreyBinding(predator: hare, prey: grass, effectOnPrey: 6, predEfficiency: 1)
+savanna.addOrganismDieoff(organism: hare, mortalityRate: 1)
+savanna.addPredatorPreyBinding(predator: eagle, prey: hare, effectOnPrey: 1, predEfficiency: 4)
+savanna.addOrganismDieoff(organism: eagle, mortalityRate: 2)
 
-for i in 1...200 {
+for i in 1...100 {
     savanna.nextCycle()
-    print("\(i) – Sun: \(sun.level), Rain: \(rain.level), Grass: \((grass.level)), Hare: \(hare.level), Eagle: \(eagle.level)")
+    print("\(i) – Grass: \((grass.level)), Hare: \(hare.level), Eagle: \(eagle.level)")
 }
