@@ -14,11 +14,11 @@ class Factor: CustomStringConvertible, Hashable {
     var hashValue: Int
     let name: String
     var delegate: FactorDelegate
-    private(set) var level: Double
+    /*private(set)*/ var level: Double
     var delta = 0.0
     var equations = [(Int, () -> Double)]()
     var description: String {
-        return "\(name) – lvl \(level)"
+        return "\(name)"
     }
     
     init(name: String, level: Double, delegate: FactorDelegate) {
