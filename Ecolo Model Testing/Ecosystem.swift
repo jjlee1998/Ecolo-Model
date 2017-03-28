@@ -21,7 +21,7 @@ class Ecosystem: CustomStringConvertible, EcosystemProtocol, FactorDelegate {
     var cycle = 0
     var factors = [String: Factor]()
     var description: String
-    var eulerIntervals = 10000
+    var eulerIntervals = 100
     
     init(name: String) {
         description = name
