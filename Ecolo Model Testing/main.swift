@@ -23,7 +23,7 @@ var orca = BioFactor(name: "Orca", level: 1, delegate: antarctic, reproductionFr
 //how can we design puzzles?
 //Too many fish are present - player needs to somehow adjust ecosystem to have lower levels of fish
 //Is the goal to bring the ecosystem to equilibrium?
-
+//Trophic level totals determine equilibrium
 /*antarctic.add(sun)
  antarctic.add(rain)*/
 antarctic.add(phytoplankton)
@@ -38,6 +38,7 @@ antarctic.addOrganismDieoff(organism: penguin, mortalityRate: 2)
 antarctic.addPredatorPreyBinding(predator: penguin, prey: fish, effectOnPrey: 1, predEfficiency: 2)
 antarctic.addOrganismDieoff(organism: orca, mortalityRate: 0.5)
 antarctic.addPredatorPreyBinding(predator: orca, prey: penguin, effectOnPrey: 1, predEfficiency: 0.5)
+
 
 func takeOption(input: String) {
     var inputArray = input.characters.split{$0 == " "}.map(String.init)
