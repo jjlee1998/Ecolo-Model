@@ -66,6 +66,26 @@ func takeOption(input: String) {
 }
 
 //Something like a driver?
+var interactionMatrix = Matrix<Double>(rows: 4, columns: 4, fillValue: 0)!
+interactionMatrix.setElement(row: 2, column: 0, newElement: -1.0)
+interactionMatrix.setElement(row: 3, column: 1, newElement: 0.5)
+interactionMatrix.setElement(row: 1, column: 1, newElement: -1.0)
+interactionMatrix.setElement(row: 2, column: 2, newElement: 2.0)
+interactionMatrix.setElement(row: 0, column: 2, newElement: -2.0)
+interactionMatrix.setElement(row: 1, column: 3, newElement: 1.0)
+print(interactionMatrix)
+
+var densityMatrix = Matrix<Double>(rows: 4, columns: 1, fillValue: 0)!
+densityMatrix.setElement(row: 0, column: 0, newElement: 2.0)
+densityMatrix.setElement(row: 1, column: 0, newElement: 1.5)
+densityMatrix.setElement(row: 2, column: 0, newElement: 1.0)
+densityMatrix.setElement(row: 3, column: 0, newElement: 1.0)
+print(densityMatrix)
+
+var constantMatrix = interactionMatrix * densityMatrix
+print(constantMatrix!)
+
+
 print("Welcome to \(antarctic)!")
 print("Current state:\nPhytoplankton: \((phytoplankton.level)), Fish: \(fish.level), Penguin: \(penguin.level), Orca: \(orca.level)")
 print("Controls:")
