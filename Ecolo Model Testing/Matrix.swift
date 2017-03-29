@@ -8,92 +8,89 @@
 
 import Foundation
 
-protocol MatrixReady {}
-extension Double: MatrixReady {}
-extension Int: MatrixReady {}
-
-func * (first: Matrix<Double>, second: Matrix<Double>) -> Matrix<Double>? {
-    guard first.columns == second.rows else {
+func * (first: Matrix, second: Matrix) -> Matrix? {
+    
+    guard first.columnsX == second.rowsY else {
         return nil
     }
-    var result = Matrix(rows: first.rows, columns: second.columns, fillValue: 0.0)!
-    for columnIndex in 0..<result.columns {
-        for rowIndex in 0..<result.rows {
+    
+    let productMatrix = Matrix(rowsY: first.rowsY, columnsX: second.columnsX)!
+    for columnIndex in 0..<productMatrix.columnsX {
+        for rowIndex in 0..<productMatrix.rowsY {
+            
             var newValue = 0.0
             let firstRow = first.getRow(rowIndex)
             let secondColumn = second.getColumn(columnIndex)
+            
             guard firstRow != nil && secondColumn != nil else {
                 return nil
             }
+            
             for index in 0..<firstRow!.count {
                 newValue += firstRow![index] * secondColumn![secondColumn!.count - 1 - index]
             }
-            result.setElement(row: rowIndex, column: columnIndex, newElement: newValue)
+            
+            productMatrix.setElement(rowY: rowIndex, columnX: columnIndex, newElement: newValue)
         }
     }
-    return result
+    return productMatrix
 }
 
-struct Matrix<Element: MatrixReady>: CustomStringConvertible {
+class Matrix: CustomStringConvertible {
     
-    fileprivate var elements = [[Element]]()
-    let rows: Int
-    let columns: Int
+    fileprivate var elements: [[Double]]
+    let rowsY: Int
+    let columnsX: Int
     
-    init?(rows: Int, columns: Int, fillValue: Element) {
-        guard rows > 0 && columns > 0 else {
+    init?(rowsY: Int, columnsX: Int) {
+        guard rowsY > 0 && columnsX > 0 else {
             return nil
         }
-        self.rows = rows
-        self.columns = columns
-        for columnIndex in 0..<columns {
-            elements.append([Element]())
-            for _ in 0..<rows {
-                elements[columnIndex].append(fillValue)
-            }
-        }
+        self.rowsY = rowsY
+        self.columnsX = columnsX
+        elements = [[Double]](repeating: ([Double](repeating: 0.0, count: columnsX)), count: rowsY)
     }
     
-    @discardableResult mutating func setElement(row: Int, column: Int, newElement: Element) -> Bool {
-        if row < 0 || row >= rows || column < 0 || column >= columns {
+    @discardableResult func setElement(rowY: Int, columnX: Int, newElement: Double) -> Bool {
+        if rowY < 0 || rowY >= rowsY || columnX < 0 || columnX >= columnsX {
             return false
         } else {
-            elements[column][row] = newElement
+            elements[rowY][columnX] = newElement
             return true
         }
     }
     
-    func getElement(row: Int, column: Int) -> Element? {
-        if row < 0 || row >= rows || column < 0 || column >= columns {
+    func getElement(rowY: Int, columnX: Int) -> Double? {
+        if rowY < 0 || rowY >= rowsY || columnX < 0 || columnX >= columnsX {
             return nil
         } else {
-            return elements[column][row]
+            return elements[rowY][columnX]
         }
     }
     
-    func getColumn(_ columnIndex: Int) -> [Element]? {
-        if columnIndex < 0 || columnIndex >= columns {
+    func getRow(_ rowIndex: Int) -> [Double]? {
+        if rowIndex < 0 || rowIndex >= rowsY {
             return nil
         } else {
-            return elements[columnIndex]
+            return elements[rowIndex]
         }
     }
     
-    func getRow(_ rowIndex: Int) -> [Element]? {
-        if rowIndex < 0 || rowIndex >= rows {
+    func getColumn(_ columnIndex: Int) -> [Double]? {
+        if columnIndex < 0 || columnIndex >= columnsX {
             return nil
         } else {
-            var row = [Element]()
-            for column in elements {
-                row.append(column[rowIndex])
+            var column = [Double]()
+            for row in elements {
+                column.append(row[columnIndex])
             }
-            return row
+            return column
         }
     }
     
-    mutating func map(_ function: (Element) -> Element) {
-        for columnIndex in 0..<columns {
-            elements[columnIndex] = elements[columnIndex].map(function)
+    func map(_ function: (Double) -> Double) {
+        for rowIndex in 0..<rowsY {
+            elements[rowIndex] = elements[rowIndex].map(function)
         }
     }
     
@@ -104,15 +101,15 @@ struct Matrix<Element: MatrixReady>: CustomStringConvertible {
     
     var description: String {
         var maximumLength = 0
-        for column in elements {
-            for element in column {
+        for row in elements {
+            for element in row {
                 let elementStringCount = String(describing: element).characters.count
                 if elementStringCount > maximumLength {maximumLength = elementStringCount}
             }
         }
-        var result = "┌" + String(repeating: " ", count: 1 + (maximumLength + 1) * columns) + "┐"
-        for rowIndex in 1...rows {
-            guard let row = getRow(rows - rowIndex) else {
+        var result = "┌" + String(repeating: " ", count: 1 + (maximumLength + 1) * columnsX) + "┐"
+        for rowIndex in 0..<rowsY {
+            guard let row = getRow(rowIndex) else {
                 return "Could not print Matrix; encountered problem with Row \(rowIndex)"
             }
             result += "\n│ "
@@ -126,7 +123,15 @@ struct Matrix<Element: MatrixReady>: CustomStringConvertible {
             }
             result += "│"
         }
-        result += "\n└" + String(repeating: " ", count: 1 + (maximumLength + 1) * columns) + "┘"
+        result += "\n└" + String(repeating: " ", count: 1 + (maximumLength + 1) * columnsX) + "┘"
         return result
     }
+}
+
+class InteractionMatrix: Matrix {
+    
+    init?(size: Int) {
+        super.init(rowsY: size, columnsX: size)
+    }
+    
 }
