@@ -14,12 +14,14 @@ protocol EcosystemProtocol {
 protocol FactorDelegate {
     func getCycle() -> Int
     func getEulerIntervals() -> Int
+    func getInteractionMatrix() -> Matrix
 }
 
 class Ecosystem: CustomStringConvertible, EcosystemProtocol, FactorDelegate {
     
+    var interactionMatrix = Matrix(rowsY: 1, columnsX: 1)!
     var cycle = 0
-    var factors = [String: Factor]()
+    var factors = [Int: Factor]()
     var description: String
     var eulerIntervals = 100
     
@@ -28,7 +30,7 @@ class Ecosystem: CustomStringConvertible, EcosystemProtocol, FactorDelegate {
     }
     
     func add(_ factor: Factor) {
-        factors[factor.description] = factor
+        factors[factor.hashValue] = factor
     }
     
     func getCycle() -> Int {
@@ -39,6 +41,10 @@ class Ecosystem: CustomStringConvertible, EcosystemProtocol, FactorDelegate {
         return eulerIntervals
     }
     
+    func getInteractionMatrix() -> Matrix {
+        return interactionMatrix
+    }
+    
     /*@discardableResult func addResourceTimeBinding(resource: Factor, amplitude: Double, offset: Int) -> Bool {
         if factors.values.contains(resource) {
             let startLevel = resource.getLevel()
@@ -46,7 +52,7 @@ class Ecosystem: CustomStringConvertible, EcosystemProtocol, FactorDelegate {
             return true
         }
         return false
-    }*/
+    }
     
     @discardableResult func addOrganismDieoff(organism: BioFactor, mortalityRate: Double) -> Bool {
         if factors.values.contains(organism) {
@@ -82,7 +88,7 @@ class Ecosystem: CustomStringConvertible, EcosystemProtocol, FactorDelegate {
                 factor.update()
             }
         }
-    }
+    }*/
     
     func printFactors() {
         for factor in factors.values {

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		041151891E76FB9F0063F187 /* BioFactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041151881E76FB9F0063F187 /* BioFactor.swift */; };
+		041C8D761E8AD4C500DF8454 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041C8D751E8AD4C500DF8454 /* Matrix.swift */; };
 		04568B2D1E6499440077947E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04568B2C1E6499440077947E /* main.swift */; };
 		04F63E3B1E6628A700B92D64 /* Factor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F63E361E6628A700B92D64 /* Factor.swift */; };
 		04F63E3F1E6628A700B92D64 /* Ecosystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F63E3A1E6628A700B92D64 /* Ecosystem.swift */; };
@@ -26,7 +26,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		041151881E76FB9F0063F187 /* BioFactor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BioFactor.swift; sourceTree = "<group>"; };
+		041C8D751E8AD4C500DF8454 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
 		04568B291E6499440077947E /* Ecolo Model Testing */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Ecolo Model Testing"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04568B2C1E6499440077947E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		04F63E361E6628A700B92D64 /* Factor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Factor.swift; sourceTree = "<group>"; };
@@ -64,9 +64,9 @@
 			isa = PBXGroup;
 			children = (
 				04568B2C1E6499440077947E /* main.swift */,
+				041C8D751E8AD4C500DF8454 /* Matrix.swift */,
 				04F63E3A1E6628A700B92D64 /* Ecosystem.swift */,
 				04F63E361E6628A700B92D64 /* Factor.swift */,
-				041151881E76FB9F0063F187 /* BioFactor.swift */,
 			);
 			path = "Ecolo Model Testing";
 			sourceTree = "<group>";
@@ -130,9 +130,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				04F63E3B1E6628A700B92D64 /* Factor.swift in Sources */,
+				041C8D761E8AD4C500DF8454 /* Matrix.swift in Sources */,
 				04F63E3F1E6628A700B92D64 /* Ecosystem.swift in Sources */,
 				04568B2D1E6499440077947E /* main.swift in Sources */,
-				041151891E76FB9F0063F187 /* BioFactor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
