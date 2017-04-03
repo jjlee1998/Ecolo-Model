@@ -23,16 +23,32 @@ antarctic.add(fish)
 antarctic.add(penguin)
 antarctic.add(orca)
 
+
 antarctic.addPairing(factor1: orca, factor2: penguin, effect1: 0.5, effect2: -1.0)
-antarctic.addPairing(factor1: penguin, factor2: fish, effect1: 2.0, effect2: -1.0)
-antarctic.addPairing(factor1: fish, factor2: phytoplankton, effect1: 1.0, effect2: -2.0)
+antarctic.addPairing(factor1: penguin, factor2: fish, effect1: 1.5, effect2: -0.85)
+antarctic.addPairing(factor1: fish, factor2: phytoplankton, effect1: 1.5, effect2: -1.0)
 antarctic.addPairing(factor1: phytoplankton, factor2: sunlight, effect1: 0.01, effect2: 0.0)
-print(antarctic.interactionMatrix)
+
 
 antarctic.addNaturalChangeConstant(factor: orca, constant: -0.5)
 antarctic.addNaturalChangeConstant(factor: penguin, constant: -2.0)
-antarctic.addNaturalChangeConstant(factor: fish, constant: -1.0)
+antarctic.addNaturalChangeConstant(factor: fish, constant: -1.3)
 antarctic.addNaturalChangeConstant(factor: phytoplankton, constant: 3.0)
+
+
+//Testing addition of new factors
+var leopardSeal = Factor(name: "Leopard Seal", level: 1, delegate: antarctic, type: .Consumer)
+antarctic.add(leopardSeal)
+antarctic.addPairing(factor1: leopardSeal, factor2: penguin, effect1: 0.6, effect2: -0.5)
+antarctic.addNaturalChangeConstant(factor: leopardSeal, constant: -0.6)
+
+var baleenWhale = Factor(name: "Baleen Whale", level: 0.5, delegate: antarctic, type: .Consumer)
+antarctic.add(baleenWhale)
+antarctic.addPairing(factor1: baleenWhale, factor2: phytoplankton, effect1: 0.2, effect2: -0.3)
+antarctic.addNaturalChangeConstant(factor: baleenWhale, constant: -0.2)
+
+
+print(antarctic.interactionMatrix)
 print(antarctic.mortalityMatrix)
 
 var exit = false
@@ -44,7 +60,7 @@ func takeOption(input: String) {
         let cycleNumber = Int(inputArray[1])!
         for i in 1...cycleNumber {
             antarctic.nextCycle()
-            print("\(i) – phytoplankton: \((phytoplankton.level)), fish: \(fish.level), penguin: \(penguin.level), orca: \(orca.level)")
+            print("\(i) – sunlight: \(sunlight.level), phytoplankton: \(phytoplankton.level), fish: \(fish.level), penguin: \(penguin.level), orca: \(orca.level), leopard seal: \(leopardSeal.level), baleen whale: \(baleenWhale.level)")
         }
     case "printFactors":
         for factor in antarctic.factors.values {
@@ -57,10 +73,9 @@ func takeOption(input: String) {
 }
 
 print("Welcome to \(antarctic)!")
-print("Current state:\nPhytoplankton: \((phytoplankton.level)), Fish: \(fish.level), Penguin: \(penguin.level), Orca: \(orca.level)")
+print("Current state:\nSunlight: \(sunlight.level), Phytoplankton: \(phytoplankton.level), Fish: \(fish.level), Penguin: \(penguin.level), Orca: \(orca.level), Leopard Seal: \(leopardSeal.level), Baleen Whale: \(baleenWhale.level)")
 print("Controls:")
 print("cycle n: ecosystem cycles n times")
-print("setLevel m n: set level of organism m to n")
 print("printFactors: print all factors in \(antarctic)")
 print("exit: end program")
 while !exit {
