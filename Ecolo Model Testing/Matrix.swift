@@ -27,7 +27,7 @@ func * (first: Matrix, second: Matrix) -> Matrix? {
             }
             
             for index in 0..<firstRow!.count {
-                newValue += firstRow![index] * secondColumn![secondColumn!.count - 1 - index]
+                newValue += firstRow![index] * secondColumn![index]
             }
             
             productMatrix.setElement(rowY: rowIndex, columnX: columnIndex, newElement: newValue)
@@ -39,8 +39,8 @@ func * (first: Matrix, second: Matrix) -> Matrix? {
 class Matrix: CustomStringConvertible {
     
     fileprivate var elements: [[Double]]
-    let rowsY: Int
-    let columnsX: Int
+    var rowsY: Int
+    var columnsX: Int
     
     init?(rowsY: Int, columnsX: Int) {
         guard rowsY > 0 && columnsX > 0 else {
@@ -132,6 +132,16 @@ class InteractionMatrix: Matrix {
     
     init?(size: Int) {
         super.init(rowsY: size, columnsX: size)
+    }
+    
+    func increaseSize() {
+        elements.append([Double](repeating: 0.0, count: columnsX))
+        rowsY += 1
+        columnsX += 1
+        for rowIndex in 0..<rowsY {
+            elements[rowIndex].append(0.0)
+        }
+        
     }
     
 }

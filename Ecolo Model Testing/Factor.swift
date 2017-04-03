@@ -51,10 +51,19 @@ class Factor: CustomStringConvertible, Hashable {
     }
     
     private func lvProducer() {
-        
+        delta = 0.0
+        for i in 0 ..< delegate.getInteractionMatrix().getRow(hashValue)!.count {
+            delta += delegate.getInteractionMatrix().getRow(hashValue)![i] * level * delegate.getFactors()[i]!.level
+        }
+        delta += delegate.getMortalityMatrix().getColumn(0)![hashValue] * level * -1
     }
     
     private func lvConsumer() {
+        delta = 0.0
+        for i in 0 ..< delegate.getInteractionMatrix().getRow(hashValue)!.count {
+            delta += delegate.getInteractionMatrix().getRow(hashValue)![i] * level * delegate.getFactors()[i]!.level
+        }
+        delta += delegate.getMortalityMatrix().getColumn(0)![hashValue] * level * -1
         
     }
     
@@ -66,11 +75,12 @@ class Factor: CustomStringConvertible, Hashable {
             }
         }
     }
-    
+    */
     func update() {
+        lotkaVolterra()
         level += delta / Double(delegate.getEulerIntervals())
         if level < 1e-6 {
             level = 0
         }
-    }*/
+    }
 }

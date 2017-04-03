@@ -15,11 +15,15 @@ protocol FactorDelegate {
     func getCycle() -> Int
     func getEulerIntervals() -> Int
     func getInteractionMatrix() -> Matrix
+    func getMortalityMatrix() -> Matrix
+    func getFactors() -> [Int: Factor]
 }
 
 class Ecosystem: CustomStringConvertible, EcosystemProtocol, FactorDelegate {
     
-    var interactionMatrix = Matrix(rowsY: 1, columnsX: 1)!
+    var interactionMatrix = InteractionMatrix(size: 1)!
+    var mortalityMatrix = Matrix(rowsY: 1, columnsX: 1)!
+    
     var cycle = 0
     var factors = [Int: Factor]()
     var description: String
@@ -43,6 +47,14 @@ class Ecosystem: CustomStringConvertible, EcosystemProtocol, FactorDelegate {
     
     func getInteractionMatrix() -> Matrix {
         return interactionMatrix
+    }
+    
+    func getMortalityMatrix() -> Matrix {
+        return mortalityMatrix
+    }
+    
+    func getFactors() -> [Int: Factor] {
+        return factors
     }
     
     /*@discardableResult func addResourceTimeBinding(resource: Factor, amplitude: Double, offset: Int) -> Bool {
@@ -77,18 +89,20 @@ class Ecosystem: CustomStringConvertible, EcosystemProtocol, FactorDelegate {
         }
         return false
     }
-    
+    */
+ 
     func nextCycle() {
         cycle += 1
         for _ in 0..<eulerIntervals {
-            for factor in factors.values {
+            /*for factor in factors.values {
                 factor.nextCycle()
-            }
+            }*/
             for factor in factors.values {
+                
                 factor.update()
             }
         }
-    }*/
+    }
     
     func printFactors() {
         for factor in factors.values {
