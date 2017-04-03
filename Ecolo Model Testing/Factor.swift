@@ -11,6 +11,7 @@ import Foundation
 enum FactorType {
     case Producer
     case Consumer
+    case Resource
 }
 
 class Factor: CustomStringConvertible, Hashable {
@@ -43,44 +44,42 @@ class Factor: CustomStringConvertible, Hashable {
         level = newLevel
     }
     
-    func lotkaVolterra() {
-        switch type {
-            case .Producer: lvProducer()
-            case .Consumer: lvConsumer()
-        }
-    }
-    
-    private func lvProducer() {
-        delta = 0.0
-        for i in 0 ..< delegate.getInteractionMatrix().getRow(hashValue)!.count {
-            delta += delegate.getInteractionMatrix().getRow(hashValue)![i] * level * delegate.getFactors()[i]!.level
-        }
-        delta += delegate.getMortalityMatrix().getColumn(0)![hashValue] * level * -1
-    }
-    
-    private func lvConsumer() {
-        delta = 0.0
-        for i in 0 ..< delegate.getInteractionMatrix().getRow(hashValue)!.count {
-            delta += delegate.getInteractionMatrix().getRow(hashValue)![i] * level * delegate.getFactors()[i]!.level
-        }
-        delta += delegate.getMortalityMatrix().getColumn(0)![hashValue] * level * -1
-        
-    }
-    
-    /*func nextCycle() {
-        delta = 0.0
-        for (frequency, equation) in equations {
-            if delegate.getCycle() % frequency == 0 {
-                delta += equation()
-            }
-        }
-    }
-    */
     func update() {
         lotkaVolterra()
         level += delta / Double(delegate.getEulerIntervals())
         if level < 1e-6 {
             level = 0
         }
+    }
+    
+    func lotkaVolterra() {
+        switch type {
+            case .Producer: lvProducer()
+            case .Consumer: lvConsumer()
+            default: break
+        }
+    }
+    
+    private func lvProducer() {
+        delta = 0.0
+        var carryingCapacityEffect = 0.0
+        let interactionCoefficients = delegate.getInteractionMatrix().getRow(delegate.getFactors()[self]!)!
+        for i in 0 ..< interactionCoefficients.count {
+            if delegate.getFactors()[i]!.type == .Resource {
+                carryingCapacityEffect += interactionCoefficients[i] * level * delegate.getFactors()[i]!.level
+            } else {
+                delta += interactionCoefficients[i] * level * delegate.getFactors()[i]!.level
+            }
+        }
+        delta += delegate.getMortalityMatrix().getColumn(0)![hashValue] * level * (1 - carryingCapacityEffect)
+    }
+    
+    private func lvConsumer() {
+        delta = 0.0
+        let interactionCoefficients = delegate.getInteractionMatrix().getRow(delegate.getFactors()[self]!)!
+        for i in 0 ..< interactionCoefficients.count {
+            delta += interactionCoefficients[i] * level * delegate.getFactors()[i]!.level
+        }
+        delta += delegate.getMortalityMatrix().getColumn(0)![hashValue] * level
     }
 }

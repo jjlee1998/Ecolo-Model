@@ -94,6 +94,23 @@ class Matrix: CustomStringConvertible {
         }
     }
     
+    func increaseRows() {
+        elements.append([Double](repeating: 0.0, count: columnsX))
+        rowsY += 1
+    }
+    
+    func increaseColumns() {
+        columnsX += 1
+        for rowIndex in 0..<rowsY {
+            elements[rowIndex].append(0.0)
+        }
+    }
+    
+    func increaseSize() {
+        increaseRows()
+        increaseColumns()
+    }
+    
     //Method to find identity matrix
     //Method to return the adjoint matrix
     //Method to find determinant
@@ -130,18 +147,15 @@ class Matrix: CustomStringConvertible {
 
 class InteractionMatrix: Matrix {
     
+    var size: Int {
+        get {return rowsY}
+        set {
+            rowsY = newValue
+            columnsX = newValue
+        }
+    }
+    
     init?(size: Int) {
         super.init(rowsY: size, columnsX: size)
     }
-    
-    func increaseSize() {
-        elements.append([Double](repeating: 0.0, count: columnsX))
-        rowsY += 1
-        columnsX += 1
-        for rowIndex in 0..<rowsY {
-            elements[rowIndex].append(0.0)
-        }
-        
-    }
-    
 }

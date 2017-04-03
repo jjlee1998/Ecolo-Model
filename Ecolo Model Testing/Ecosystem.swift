@@ -9,23 +9,27 @@
 import Foundation
 
 protocol EcosystemProtocol {
+    func add(_ factor: Factor)
+    func addPairing(factor1: Factor, factor2: Factor, effect1: Double, effect2: Double) -> Bool
+    func nextCycle()
 }
 
 protocol FactorDelegate {
     func getCycle() -> Int
     func getEulerIntervals() -> Int
-    func getInteractionMatrix() -> Matrix
+    func getInteractionMatrix() -> InteractionMatrix
     func getMortalityMatrix() -> Matrix
-    func getFactors() -> [Int: Factor]
+    func getFactors() -> TwoWayDictionary<Int, Factor>
 }
 
 class Ecosystem: CustomStringConvertible, EcosystemProtocol, FactorDelegate {
     
+    var nextFactorIndex = 0
+    var factors = TwoWayDictionary<Int, Factor>()
     var interactionMatrix = InteractionMatrix(size: 1)!
     var mortalityMatrix = Matrix(rowsY: 1, columnsX: 1)!
     
     var cycle = 0
-    var factors = [Int: Factor]()
     var description: String
     var eulerIntervals = 100
     
@@ -34,7 +38,31 @@ class Ecosystem: CustomStringConvertible, EcosystemProtocol, FactorDelegate {
     }
     
     func add(_ factor: Factor) {
-        factors[factor.hashValue] = factor
+        factors[nextFactorIndex] = factor
+        if nextFactorIndex > 0 {
+            interactionMatrix.increaseSize()
+            mortalityMatrix.increaseRows()
+        }
+        nextFactorIndex += 1
+    }
+    
+    @discardableResult func addPairing(factor1: Factor, factor2: Factor, effect1: Double, effect2: Double) -> Bool {
+        guard factors.values.contains(factor1) && factors.values.contains(factor2) && interactionMatrix.size >= nextFactorIndex else {
+            print("Failed to add relationship \(effect1) to \(factor1) with \(effect2) to \(factor2)")
+            return false
+        }
+        interactionMatrix.setElement(rowY: factors[factor1]!, columnX: factors[factor2]!, newElement: effect1)
+        interactionMatrix.setElement(rowY: factors[factor2]!, columnX: factors[factor1]!, newElement: effect2)
+        return true
+    }
+    
+    @discardableResult func addNaturalChangeConstant(factor: Factor, constant: Double) -> Bool {
+        guard factors.values.contains(factor) && mortalityMatrix.rowsY >= nextFactorIndex else {
+            print("Failed to add change constant \(constant) to \(factor)")
+            return false
+        }
+        mortalityMatrix.setElement(rowY: factors[factor]!, columnX: 0, newElement: constant)
+        return true
     }
     
     func getCycle() -> Int {
@@ -45,7 +73,7 @@ class Ecosystem: CustomStringConvertible, EcosystemProtocol, FactorDelegate {
         return eulerIntervals
     }
     
-    func getInteractionMatrix() -> Matrix {
+    func getInteractionMatrix() -> InteractionMatrix {
         return interactionMatrix
     }
     
@@ -53,43 +81,9 @@ class Ecosystem: CustomStringConvertible, EcosystemProtocol, FactorDelegate {
         return mortalityMatrix
     }
     
-    func getFactors() -> [Int: Factor] {
+    func getFactors() -> TwoWayDictionary<Int, Factor> {
         return factors
     }
-    
-    /*@discardableResult func addResourceTimeBinding(resource: Factor, amplitude: Double, offset: Int) -> Bool {
-        if factors.values.contains(resource) {
-            let startLevel = resource.getLevel()
-            sun.add(equation: {resource.setLevel(to: startgetLevel() + amplitude * sin(Double(resource.delegate.getCycle() - offset) * M_PI / 180)); return 0.0}, frequency: 1)
-            return true
-        }
-        return false
-    }
-    
-    @discardableResult func addOrganismDieoff(organism: BioFactor, mortalityRate: Double) -> Bool {
-        if factors.values.contains(organism) {
-            organism.add(equation: {(-1 * mortalityRate * organism.getLevel())}, frequency: 1)
-            return true
-        }
-        return false
-    }
-    
-    @discardableResult func addNaturalSpeciesGrowthRate(species: BioFactor, naturalGrowthRate: Double) -> Bool {
-        if factors.values.contains(species) {
-            species.add(equation: {naturalGrowthRate * species.getLevel()}, frequency: 1)
-            return true
-        }
-        return false
-    }
-    
-    @discardableResult func addPredatorPreyBinding(predator: BioFactor, prey: BioFactor, effectOnPrey: Double, predEfficiency: Double) -> Bool {
-        if factors.values.contains(predator) && factors.values.contains(prey) {
-            prey.add(equation: {-1 * effectOnPrey * prey.getLevel() * predator.getLevel()}, frequency: 1)
-            predator.add(equation: {predEfficiency * prey.getLevel() * predator.getLevel()}, frequency: 1)
-        }
-        return false
-    }
-    */
  
     func nextCycle() {
         cycle += 1
