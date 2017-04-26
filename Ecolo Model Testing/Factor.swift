@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum FactorType {
+enum FactorType: String {
     case Producer
     case Consumer
     case Resource

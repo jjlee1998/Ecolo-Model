@@ -8,12 +8,16 @@
 
 import Foundation
 
-var antarctic = Ecosystem(name: "Antarctic Ecosystem")
+if let antarcticStream = StreamlinedEcosystem(name: "Antarctic Ecosystem") {
+    antarcticStream.printFactorData()
+}
+
+/*var antarctic = Ecosystem(name: "Antarctic Ecosystem")
 print(antarctic, terminator: "\n\n")
 
 var sunlight = Factor(name: "Sunlight", level: 3, delegate: antarctic, type: .Resource)
 var phytoplankton = Factor(name: "Phytoplankton", level: 2, delegate: antarctic, type: .Producer)
-var fish = Factor(name: "Fish", level: 1.5, delegate: antarctic, type: .Consumer)
+var fish = Factor(name: "Fish", level: 2.0, delegate: antarctic, type: .Consumer)
 var penguin = Factor(name: "Penguin", level: 1, delegate: antarctic, type: .Consumer)
 var orca = Factor(name: "Orca", level: 1, delegate: antarctic, type: .Consumer)
 
@@ -24,13 +28,13 @@ antarctic.add(penguin)
 antarctic.add(orca)
 
 
-antarctic.addPairing(factor1: orca, factor2: penguin, effect1: 0.5, effect2: -1.0)
+antarctic.addPairing(factor1: orca, factor2: penguin, effect1: 1.0, effect2: -0.5)
 antarctic.addPairing(factor1: penguin, factor2: fish, effect1: 1.5, effect2: -0.85)
 antarctic.addPairing(factor1: fish, factor2: phytoplankton, effect1: 1.5, effect2: -1.0)
 antarctic.addPairing(factor1: phytoplankton, factor2: sunlight, effect1: 0.01, effect2: 0.0)
 
 
-antarctic.addNaturalChangeConstant(factor: orca, constant: -0.5)
+antarctic.addNaturalChangeConstant(factor: orca, constant: -0.3)
 antarctic.addNaturalChangeConstant(factor: penguin, constant: -2.0)
 antarctic.addNaturalChangeConstant(factor: fish, constant: -1.3)
 antarctic.addNaturalChangeConstant(factor: phytoplankton, constant: 3.0)
@@ -39,8 +43,8 @@ antarctic.addNaturalChangeConstant(factor: phytoplankton, constant: 3.0)
 //Testing addition of new factors
 var leopardSeal = Factor(name: "Leopard Seal", level: 1, delegate: antarctic, type: .Consumer)
 antarctic.add(leopardSeal)
-antarctic.addPairing(factor1: leopardSeal, factor2: penguin, effect1: 0.6, effect2: -0.5)
-antarctic.addNaturalChangeConstant(factor: leopardSeal, constant: -0.6)
+antarctic.addPairing(factor1: leopardSeal, factor2: penguin, effect1: 1.0, effect2: -0.5)
+antarctic.addNaturalChangeConstant(factor: leopardSeal, constant: -0.5)
 
 var baleenWhale = Factor(name: "Baleen Whale", level: 0.5, delegate: antarctic, type: .Consumer)
 antarctic.add(baleenWhale)
@@ -82,4 +86,4 @@ while !exit {
     var input = readLine()
     takeOption(input: input!)
 }
-print("Thanks for playing")
+print("Thanks for playing")*/
