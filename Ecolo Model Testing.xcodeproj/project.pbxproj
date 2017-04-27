@@ -7,13 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		041C8D761E8AD4C500DF8454 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041C8D751E8AD4C500DF8454 /* Matrix.swift */; };
 		04568B2D1E6499440077947E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04568B2C1E6499440077947E /* main.swift */; };
-		049730391E91DA7A0047423F /* TwoWayDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049730381E91DA7A0047423F /* TwoWayDictionary.swift */; };
 		04A101931EB1108200E604C4 /* StreamlinedEcosystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A101921EB1108200E604C4 /* StreamlinedEcosystem.swift */; };
 		04A101951EB1304000E604C4 /* FactorData.plist in Sources */ = {isa = PBXBuildFile; fileRef = 04A101941EB126E900E604C4 /* FactorData.plist */; };
 		04F63E3B1E6628A700B92D64 /* Factor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F63E361E6628A700B92D64 /* Factor.swift */; };
-		04F63E3F1E6628A700B92D64 /* Ecosystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F63E3A1E6628A700B92D64 /* Ecosystem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,14 +26,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		041C8D751E8AD4C500DF8454 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
 		04568B291E6499440077947E /* Ecolo Model Testing */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Ecolo Model Testing"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04568B2C1E6499440077947E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		049730381E91DA7A0047423F /* TwoWayDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoWayDictionary.swift; sourceTree = "<group>"; };
 		04A101921EB1108200E604C4 /* StreamlinedEcosystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamlinedEcosystem.swift; sourceTree = "<group>"; };
 		04A101941EB126E900E604C4 /* FactorData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FactorData.plist; sourceTree = "<group>"; };
 		04F63E361E6628A700B92D64 /* Factor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Factor.swift; sourceTree = "<group>"; };
-		04F63E3A1E6628A700B92D64 /* Ecosystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ecosystem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,9 +67,6 @@
 				04F63E361E6628A700B92D64 /* Factor.swift */,
 				04A101921EB1108200E604C4 /* StreamlinedEcosystem.swift */,
 				04A101941EB126E900E604C4 /* FactorData.plist */,
-				041C8D751E8AD4C500DF8454 /* Matrix.swift */,
-				04F63E3A1E6628A700B92D64 /* Ecosystem.swift */,
-				049730381E91DA7A0047423F /* TwoWayDictionary.swift */,
 			);
 			path = "Ecolo Model Testing";
 			sourceTree = "<group>";
@@ -141,9 +132,6 @@
 				04A101951EB1304000E604C4 /* FactorData.plist in Sources */,
 				04F63E3B1E6628A700B92D64 /* Factor.swift in Sources */,
 				04A101931EB1108200E604C4 /* StreamlinedEcosystem.swift in Sources */,
-				049730391E91DA7A0047423F /* TwoWayDictionary.swift in Sources */,
-				041C8D761E8AD4C500DF8454 /* Matrix.swift in Sources */,
-				04F63E3F1E6628A700B92D64 /* Ecosystem.swift in Sources */,
 				04568B2D1E6499440077947E /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

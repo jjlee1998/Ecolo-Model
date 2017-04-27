@@ -11,6 +11,8 @@
 	<dict>
 		<key>Phytoplankton</key>
 		<dict>
+			<key>Sunlight</key>
+			<string>0.01</string>
 			<key>Baleen Whale</key>
 			<string>-0.3</string>
 			<key>Fish</key>
@@ -35,7 +37,7 @@
 			<key>Leopard Seal</key>
 			<string>-0.5</string>
 			<key>Orca</key>
-			<string>-0.5</string>
+			<string>-1.0</string>
 			<key>Fish</key>
 			<string>1.5</string>
 			<key>Penguin</key>
@@ -43,23 +45,25 @@
 		</dict>
 		<key>Orca</key>
 		<dict>
+			<key>Penguin</key>
+			<string>0.5</string>
 			<key>Fish</key>
 			<string>1.0</string>
 			<key>Orca</key>
-			<string>-0.3</string>
+			<string>-0.5</string>
 		</dict>
 		<key>Leopard Seal</key>
 		<dict>
 			<key>Leopard Seal</key>
-			<string>-0.5</string>
+			<string>-0.6</string>
 			<key>Penguin</key>
-			<string>1.0</string>
+			<string>0.6</string>
 		</dict>
 		<key>Baleen Whale</key>
 		<dict>
 			<key>Baleen Whale</key>
 			<string>-0.2</string>
-			<key>Plankton</key>
+			<key>Phytoplankton</key>
 			<string>0.2</string>
 		</dict>
 	</dict>
