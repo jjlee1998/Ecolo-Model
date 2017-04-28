@@ -11,7 +11,7 @@ import Foundation
 let antarctic = StreamlinedEcosystem(name: "Antarctic Ecosystem")!
 antarctic.add("Sunlight", ofType: .Resource, withLevel: 3)
 antarctic.add("Phytoplankton", ofType: .Producer, withLevel: 2)
-antarctic.add("Fish", ofType: .Consumer, withLevel: 2)
+antarctic.add("Fish", ofType: .Consumer, withLevel: 4)
 antarctic.add("Penguin", ofType: .Consumer, withLevel: 1)
 antarctic.add("Orca", ofType: .Consumer, withLevel: 1)
 antarctic.add("Leopard Seal", ofType: .Consumer, withLevel: 1)

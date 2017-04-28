@@ -37,11 +37,11 @@
 			<key>Leopard Seal</key>
 			<string>-0.5</string>
 			<key>Orca</key>
-			<string>-1.0</string>
+			<string>-0.5</string>
 			<key>Fish</key>
 			<string>1.5</string>
 			<key>Penguin</key>
-			<string>-2.0</string>
+			<string>-1.0</string>
 		</dict>
 		<key>Orca</key>
 		<dict>
